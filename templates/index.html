@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <title>News</title>
+</head>
+<body>
+    <div class="container">
+        <h1>News</h1>
+        <h2>Enter Search Query</h2>
+        <form method="post">
+            <input 
+                type="text" 
+                name="search_query" 
+                class="form-control"
+                placeholder="Enter search query"
+                required
+            >
+            <br>
+            <select name="country" class="form-control" required>
+                <option value="" disabled {% if not selected_country %}selected{% endif %}>
+                    Select Country
+                </option>
+
+                {% for country in countries %}
+                    <option 
+                        value="{{ country.code }}"
+                        {% if selected_country == country.code %}selected{% endif %}
+                    >
+                        {{ country.name }}
+                    </option>
+                {% endfor %}
+            </select>
+            <br>
+            <button type="submit" class="btn btn-success">
+                Search
+            </button>
+        </form>
+
+
+        <h3>Search History:</h3>
+            {% for article in articles|reverse %}
+                <div class="alert alert-info">
+                    <p>{{ article.search_query }}</p>
+                </div>
+            {% endfor %}
+
+        <h3>Search Results:</h3>
+            {% for result in results|reverse %}
+                <div class="alert alert-info">
+                    <h4>
+                        <a href="{{ result.link }}" target="_blank" rel="noopener noreferrer">
+                            {{ result.title }}
+                        </a>
+                    </h4>
+
+                    <p>{{ result.source }} · {{ result.date }}</p>
+                </div>
+            {% endfor %}
+    </div>
+</body>
+</html>
